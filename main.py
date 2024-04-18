@@ -15,7 +15,6 @@ import requests
 import datetime
 import sys
 import openai
-import asyncio
 
 
 speak = SpeakEngine("HKEY_LOCAL_MACHINE\\SOFTWARE\\Microsoft\\Speech\\Voices\\TokenEnums\\RHVoice\\Volodymyr")
@@ -38,24 +37,23 @@ class VoiceAssistant:
         self.rec = Recognizer()
         self.audio: Recognizer = self.rec
 
-    async def process_audio(self, audio):
+    def process_audio(self, audio):
         try:
-            recognized_text = await self.rec.recognize_google(audio, language="uk-UK")
-            print(recognized_text.lower())
-            self.recognized_voice = recognized_text
+            self.__recognized = self.rec.recognize_google(audio, language="uk-UK").lower()
+
         except UnknownValueError:
             print("голос не розпізнано!")
         except RequestError:
             print("RequestError")
 
-    async def call_assistant(self, instance):
+    def call_assistant(self, instance):
         with self.micro as source:
             print("start listening...")
             self.rec.adjust_for_ambient_noise(source)
             audio = self.rec.listen(source, phrase_time_limit=4)
             print("End listening!")
 
-        await self.process_audio(audio)
+        self.process_audio(audio)
         self.recognize_command()
 
     def filtering(self):
