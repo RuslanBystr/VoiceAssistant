@@ -23,7 +23,7 @@ ALIAS = [
     "ромчік", "рома", "роман", "ромич"
 ]
 
-LIST_OF_WORDS = [
+IGNORE_WORDS = [
     "кажи", "шо"
 ]
 
@@ -46,7 +46,7 @@ class VoiceAssistant:
         except RequestError:
             print("RequestError")
 
-    def call_assistant(self, instance):
+    def call_assistant(self, _):
         with self.micro as source:
             print("start listening...")
             self.rec.adjust_for_ambient_noise(source)
@@ -58,7 +58,9 @@ class VoiceAssistant:
 
     def filtering(self):
         """Для обробки помилкок, фільтрації текстку та ігнорування імені голосового помічника"""
-        print("[log] filtering has been called")
+
+        print("Filtering has been called")
+
         if self.__recognized == "голос не розпізнано!":
             speak("Я вас не почув")
             return 0
@@ -70,7 +72,7 @@ class VoiceAssistant:
         words = self.__recognized.split()
 
         for elem in words:
-            if elem in LIST_OF_WORDS:
+            if elem in IGNORE_WORDS:
                 self.__recognized = self.__recognized.replace(elem, "")
             if elem in ALIAS:
                 self.__recognized = self.__recognized.replace(elem, "")

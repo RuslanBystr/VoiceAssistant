@@ -31,7 +31,6 @@ command TEXT,
 link TEXT
 )""")
 
-
 db.commit()
 
 
@@ -66,9 +65,6 @@ def delete():
     print("The questions has been deleted!")
     db.commit()
 
-def exit():
-    sys.exit()
-
 
 class AddCommandApp(App):
 
@@ -91,7 +87,7 @@ class AddCommandApp(App):
                                   size_hint=(1, .5),
                                   text_size=(Window.size[0] - 40, Window.size[1] / 20))
 
-        self.lbl = Label(text="Добавте команду",
+        self.lbl = Label(text="Добавте команду в відповідну таблицю.",
                          font_size=20,
                          halign="left",
                          valign="center",
